@@ -5,7 +5,7 @@ export default function decks(state={},action){
     case GET_ALL_DECKS :
           return {
             ...state,
-            ...action.decks
+            decks: action.decks
           }
            default : return state;
   }

@@ -13,18 +13,24 @@ class Decks extends Component {
 
   render(){
       const {decks} = this.props;
-
+    console.log(this.props.decks);
+  //  console.log('props');
+    //console.log(decks);
     return (
 
-       <View style={styles.container}>
-      <Text>hello</Text>
+       <ScrollView contentContainerStyle={styles.container}>
+
        {decks && Object.keys(decks).map(id =>(
-
-               <View key={decks[id].id}><Text>{decks[id].title}</Text></View>
-
+          <View style={styles.deck}>
+            <TouchableOpacity key={id}>
+               <View key={decks[id].deckID}>
+               <Text style={{fontSize:18,fontWeight:'bold'}}>{decks[id].title}</Text>
+               <Text style={{paddingBottom:10,  alignItems: 'center'}}>{decks[id].questions.length} cards</Text>
+               </View>
+             </TouchableOpacity>
+          </View>
            ))}
-
-       </View>
+       </ScrollView>
 
     )
 
@@ -39,12 +45,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
 
+  },
+  deck:{
+    flex:1,
+    marginLeft:20,
+    marginRight:30,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
 //trying to get decks from state
 function mapStateToProps({decks}){
-
+  console.log(decks);
   return{
     decks
   };
