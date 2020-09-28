@@ -1,23 +1,32 @@
 // this is the homepage that contains the cards for all the decks
 import React,{Component} from 'react';
-import { ScrollView, StyleSheet, Text, View, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Platform,TouchableOpacity } from 'react-native';
 import {getAllCards} from '../utils/helpers';
-export default class Decks extends Component {
-  render(){
-    const metaInfo = getAllCards();
-    return (
-  
-    <View style={styles.container}>
-    <ScrollView >
-       {metaInfo && Object.keys(metaInfo).map(id =>(
-         //return(
-           <View><Text>{metaInfo[id].title}</Text></View>
-        // )
-       ))}
-    </ScrollView>
-    </View>
-    );
+import {handleAllDecksData} from '../actions/index.js';
+import {connect} from 'react-redux'
 
+class Decks extends Component {
+
+  componentDidMount(){
+    this.props.dispatch(handleAllDecksData())
+  }
+
+  render(){
+      const {decks} = this.props;
+
+    return (
+
+       <View style={styles.container}>
+      <Text>hello</Text>
+       {decks && Object.keys(decks).map(id =>(
+
+               <View key={decks[id].id}><Text>{decks[id].title}</Text></View>
+
+           ))}
+
+       </View>
+
+    )
 
 }
 }
@@ -32,3 +41,14 @@ const styles = StyleSheet.create({
 
   }
 })
+
+//trying to get decks from state
+function mapStateToProps({decks}){
+
+  return{
+    decks
+  };
+}
+
+
+export default connect(mapStateToProps)(Decks)

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React,{Component} from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import {Provider} from 'react-redux'
@@ -6,10 +5,13 @@ import {purple, white} from './utils/colors';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+//import thunk from 'redux-thunk';
+import reducer from './reducers'
 import Decks from './components/Decks'
 import NewDeck from './components/NewDeck'
 import { Ionicons } from '@expo/vector-icons';
+import {handleAllDecksData} from './actions/index.js';
+import {connect} from 'react-redux';
 // export default function App() {
 //   return (
 //     <View style={styles.container}>
@@ -27,7 +29,7 @@ import { Ionicons } from '@expo/vector-icons';
 //     justifyContent: 'center',
 //   },
 // });
-
+//const store=createStore(reducer)
 function UdaciStatusBar ({backgroundColor, ...props}){
   return(
     //this did not work. need to check why
@@ -41,45 +43,6 @@ function UdaciStatusBar ({backgroundColor, ...props}){
 
 
 const Tab = createBottomTabNavigator();
-
-
-//const Tab = Platform.OS === 'ios'? createBottomTabNavigator() : createMaterialTopTabNavigator()
-
-// const Tabs = TabNavigator({
-//   Decks :{
-//     screen: Decks,
-//     navigationOptions:{
-//       tabBarLabel : 'Decks',
-//       tabBarIcon: ({tintColor}) =><Ionicons name='ios-bookmarks' size={30} color={tintColor} />
-//     },
-//   },
-//   NewDeck: {
-//     screen: NewDeck,
-//     navigationOptions: {
-//       tabBarLabel: 'Add Deck',
-//       tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
-//     },
-//   },
-// }, {
-//   navigationOptions: {
-//     header: null
-//   },
-//   tabBarOptions: {
-//     activeTintColor: Platform.OS === 'ios' ? purple : white,
-//     style: {
-//       height: 56,
-//       backgroundColor: Platform.OS === 'ios' ? white : purple,
-//       shadowColor: 'rgba(0, 0, 0, 0.24)',
-//       shadowOffset: {
-//         width: 0,
-//         height: 3
-//       },
-//       shadowRadius: 6,
-//       shadowOpacity: 1
-//     }
-//   }
-// })
-
 function MyTabs (){
   return(
     <NavigationContainer>
@@ -96,14 +59,10 @@ function MyTabs (){
               iconName = focused ? 'ios-list-box' : 'ios-list';
             }
 
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
-        }}
+
         >
              <Tab.Screen name="Decks" component={Decks} />
              <Tab.Screen name="New Deck" component={NewDeck} />
@@ -112,7 +71,12 @@ function MyTabs (){
   )
 }
 
-export default class App extends Component {
+class App extends Component {
+
+
+  componentDidMount(){
+    this.props.dispatch(handleAllDecksData())
+  }
   render(){
     return(
 
@@ -120,9 +84,13 @@ export default class App extends Component {
      //    <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
      //
      //  </View>
+  //   <Provider store={store}>
        <MyTabs />
+    //   </Provider>
 
 
     );
   }
 }
+//export default App;
+export default connect()(App);

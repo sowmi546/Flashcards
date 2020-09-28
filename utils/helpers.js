@@ -1,7 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {FontAwesome, MaterialIcons,MaterialCommunityIcons} from '@expo/vector-icons';
+export const FLASHCARD_STORAGE_KEY = 'UdaciFlashCards:cards'
 import {white} from './colors';
+import {AsyncStorage} from '@react-native-community/async-storage'
+
 export function getAllCards() {
   const cardsInfo = {
     "one" :{
